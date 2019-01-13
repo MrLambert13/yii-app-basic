@@ -15,6 +15,9 @@ class TestController extends Controller
     public function actionIndex()
     {
 //        return $this->render('about');
-        return $this->renderContent('qwe');
+        return $this->render('index', [
+            'data' => '12345',
+
+        ]);
     }
 }
