@@ -6,6 +6,16 @@ use app\models\Product;
 use app\models\TestModel;
 use yii\web\Controller;
 
+/*class A extends BaseObject {
+    private $_var;
+    public function setVar($value) {
+        $this->_var = $value;
+    }
+
+    public function getVar() {
+        return $this->_var;
+    }
+}*/
 
 class TestController extends Controller
 {
@@ -16,6 +26,11 @@ class TestController extends Controller
      */
     public function actionIndex()
     {
+        return \Yii::$app->test->run();
+        /*$obj = new A();
+        $obj->var = 123;
+        return $obj->var ;*/
+
         $model = new TestModel();
         $model->name = 'Бердников Сергей Юрьевич';
         $model->birthday = '07/05/1989';

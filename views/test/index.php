@@ -14,6 +14,6 @@
   <h2>Информация отсутствует</h2>
 <?php endif; ?>
 <hr>
-<?php if (isset($model)): ?>
+<?php if (isset($prod)): ?>
   <?= \yii\widgets\DetailView::widget(['model' => $prod]) ?>
 <?php endif; ?>
