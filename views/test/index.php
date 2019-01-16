@@ -13,9 +13,6 @@
   <p>Город: <u><?= $model->city ?></u></p>
   <p>О себе: <u><?= $model->about ?></u></p>
   <hr>
-<?php else: ?>
-  <h2>Информация отсутствует</h2>
-  <hr>
 <?php endif; ?>
 
 <?php if (isset($prod)): ?>
