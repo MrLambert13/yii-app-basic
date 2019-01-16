@@ -22,7 +22,7 @@ class TestController extends Controller
         $model->city = 'Боровичи';
         $model->about = 'Студент GeekBrains';
 
-        $product = new Product(1,'xiaomi mi6','телефоны', 22999.99);
+        $product = new Product();
 
         return $this->render('index', [
             'model' => $model,

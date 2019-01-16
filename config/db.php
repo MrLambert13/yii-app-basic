@@ -1,6 +1,9 @@
 <?php
 
 return [
+    /**
+     * Не использовал БД из ВМ т.к. есть отдельный mysql server на VDS свой
+     */
     'class' => 'yii\db\Connection',
     'dsn' => 'mysql:host=mrlambert.ru;dbname=yii',
     'username' => 'root',
