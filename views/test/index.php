@@ -17,3 +17,6 @@
 <?php if (isset($prod)): ?>
   <?= \yii\widgets\DetailView::widget(['model' => $prod]) ?>
 <?php endif; ?>
+<hr>
+Данные из метода run() компонента Test: <br>
+<b><?= $testmodel ?></b>

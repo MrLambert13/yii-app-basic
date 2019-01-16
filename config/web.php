@@ -51,7 +51,7 @@ $config = [
         ],
         'test' => [
             'class' => \app\components\TestService::class,
-            'prop' => '12345',
+            'prop' => 'New value of "props"',
         ],
     ],
     'params' => $params,
