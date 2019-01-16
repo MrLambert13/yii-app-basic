@@ -7,9 +7,9 @@ use yii\base\Component;
 
 class TestService extends Component
 {
-    public $prop = 'default';
+    public $property = 'Default property';
 
-    public function run() {
-        return $this->prop;
+    public function getProperty() {
+        return $this->property;
     }
 }

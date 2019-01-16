@@ -27,7 +27,7 @@ class TestController extends Controller
         return $this->render('index', [
             'model' => $model,
             'prod' => $product,
-            'testmodel' => \Yii::$app->test->run(),
+            'testmodel' => \Yii::$app->test->getProperty(),
         ]);
     }
 }
