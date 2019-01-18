@@ -65,7 +65,10 @@ class ProductController extends Controller
     public function actionCreate()
     {
         $model = new Product();
-
+        /**
+         * 5) Назначить в экшенах actionCreate и actionUpdate ProductController-а у модели разные сценарии.
+         */
+        $model->setScenario(Product::SCENARIO_CREATE);
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         }
@@ -85,6 +88,10 @@ class ProductController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        /**
+         * 5) Назначить в экшенах actionCreate и actionUpdate ProductController-а у модели разные сценарии.
+         */
+        $model->setScenario(Product::SCENARIO_UPDATE);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);

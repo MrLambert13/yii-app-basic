@@ -27,7 +27,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'id',
             ['attribute' => 'name',
                 'value' => function ($model) {
-                    $anchor = Html::a($model->name, ['/product/view?id=' . $model->id]);
+                    $anchor = Html::a($model->name, ['view', 'id' => $model->id]);
                     return $anchor;
                 },
                 'format' => 'html',

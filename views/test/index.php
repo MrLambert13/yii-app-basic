@@ -3,6 +3,7 @@
  * @var $model \app\models\TestModel
  * @var $prod \app\models\Product
  * @var $testmodel \app\components\TestService
+ * @var $lesson string
  */
 ?>
 
@@ -22,3 +23,11 @@
 
 Данные из метода getProperty() компонента test: <br>
 <b><?= $testmodel ?></b>
+<hr>
+Данные урока(для повторения без использования <b>return</b>): <br>
+<p>Validate: <?= $validate ?></p>
+<p>GetErrors:</p>
+<?= $err ?>
+<p>GetAttributes:</p>
+<?= $lesson ?>
+
