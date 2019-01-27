@@ -2,8 +2,6 @@
 
 namespace app\models;
 
-use Yii;
-
 /**
  * This is the model class for table "user".
  *
@@ -91,6 +89,7 @@ class User extends \yii\db\ActiveRecord
 
     /**
      * Возвращает задачи доступные пользователю
+     * 5) Добавить в User метод релейшена getAccessedTasks, связывающий User и Task через релейшен taskUsers.
      * @return \yii\db\ActiveQuery
      */
     public function getAccessedTasks() {

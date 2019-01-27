@@ -2,11 +2,7 @@
 
 namespace app\controllers;
 
-use app\models\Task;
 use app\models\User;
-use yii\db\Expression;
-use yii\db\Query;
-use yii\helpers\VarDumper;
 use yii\web\Controller;
 
 class TestController extends Controller

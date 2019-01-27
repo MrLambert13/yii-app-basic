@@ -159,6 +159,13 @@ class UserController extends Controller
         $models = User::find()->joinWith(User::RELATION_ACCESSED_TASKS)->all();
         _log($models);
 
+        //6) Добавить с помощью созданного релейшена связь между записями в User и Task (метод link(), обе модели д.б. сохранены).
+        $admin = User::findOne(['username' => 'Admin']);
+        $tasks = Task::findAll([6, 7, 8, 9]);
+        foreach ($tasks as $task) {
+            $admin->link(User::RELATION_ACCESSED_TASKS, $task);
+        }
+
         return $this->renderContent('complete');
     }
 
