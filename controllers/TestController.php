@@ -20,6 +20,7 @@ class TestController extends Controller
         return $this->render('index');
     }
 
+
     public function actionInsert() {
         /**
          * 3) В экшене insert TestController-а через Yii::$app->db->createCommand()->insert()
@@ -81,7 +82,7 @@ class TestController extends Controller
         $result_b = $query_b
             ->from('user')
             ->where(['>', 'id', 1])
-            ->orderBy('username', SORT_ASC)
+            ->orderBy('username')
             ->all();
 
         /**
@@ -105,7 +106,7 @@ class TestController extends Controller
         $query_d = new Query();
         $result_d = $query_d
             ->from('task')
-            ->innerJoin('user', 'user.creator_id = task.creator_id')
+            ->innerJoin('user', 'user.id = task.creator_id')
             ->all();
 
         //Сборка результата
