@@ -25,14 +25,14 @@ return [
             'showScriptName' => true,
         ],
         'user' => [
-            'identityClass' => 'app\models\User',
+            'identityClass' => 'app\models\UserBase',
         ],
         'request' => [
             'cookieValidationKey' => 'test',
             'enableCsrfValidation' => false,
             // but if you absolutely need it set cookie domain to localhost
             /*
-            'csrfCookie' => [
+            'Cookie' => [
                 'domain' => 'localhost',
             ],
             */
