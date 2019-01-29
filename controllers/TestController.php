@@ -14,8 +14,12 @@ class TestController extends Controller
      */
     public function actionIndex() {
 
-        $models = User::find()->with(User::RELATION_ACCESSED_TASKS)->all();
-        _end($models);
+        $user = new User();
+        $user->username = 'Test name';
+        $user->password_hash = 'qweqwe';
+        $user->save();
+
+        _end($user);
         return $this->render('index');
     }
 

@@ -2,6 +2,9 @@
 
 namespace app\models;
 
+use yii\behaviors\BlameableBehavior;
+use yii\behaviors\TimestampBehavior;
+
 /**
  * This is the model class for table "user".
  *
@@ -29,18 +32,28 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
     /**
      * {@inheritdoc}
      */
-    public static function tableName()
-    {
+    public static function tableName() {
         return 'user';
     }
+
+    public function behaviors() {
+        return [
+            TimestampBehavior::class,
+            [
+                'class' => BlameableBehavior::class,
+                'createdByAttribute' => 'creator_id',
+                'updatedByAttribute' => 'updater_id',
+            ],
+        ];
+    }
+
 
     /**
      * {@inheritdoc}
      */
-    public function rules()
-    {
+    public function rules() {
         return [
-            [['username', 'password_hash', 'creator_id', 'created_at'], 'required'],
+            [['username', 'password_hash'], 'required'],
             [['creator_id', 'updater_id', 'created_at', 'updated_at'], 'integer'],
             [['username', 'password_hash', 'auth_key'], 'string', 'max' => 255],
         ];
@@ -127,8 +140,7 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
      * Возвращает номера задач доступные пользователю
      * @return \yii\db\ActiveQuery
      */
-    public function getTaskUsers()
-    {
+    public function getTaskUsers() {
         return $this->hasMany(TaskUser::className(), ['user_id' => 'id']);
     }
 
@@ -146,8 +158,7 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
      * {@inheritdoc}
      * @return \app\models\query\UserQuery the active query used by this AR class.
      */
-    public static function find()
-    {
+    public static function find() {
         return new \app\models\query\UserQuery(get_called_class());
     }
 }
