@@ -26,7 +26,6 @@ class UserController extends Controller
                 'class' => AccessControl::className(),
                 'rules' => [
                     [
-                        //'actions' => ['logout'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],

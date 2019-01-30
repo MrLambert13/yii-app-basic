@@ -5,9 +5,9 @@ return [
      * Не использовал БД из ВМ т.к. есть отдельный mysql server на VDS свой
      */
     'class' => 'yii\db\Connection',
-    'dsn' => 'mysql:host=localhost;dbname=example',
+    'dsn' => 'mysql:host=mrlambert.ru;dbname=yii',
     'username' => 'root',
-    'password' => '',
+    'password' => '123456',
     'charset' => 'utf8',
 
     // Schema cache options (for production environment)
