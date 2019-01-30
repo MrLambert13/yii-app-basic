@@ -2,6 +2,8 @@
 
 namespace app\models;
 
+use yii\behaviors\TimestampBehavior;
+
 /**
  * This is the model class for table "task".
  *
@@ -16,6 +18,8 @@ namespace app\models;
  * @property User       $creator
  * @property User       $updater
  * @property TaskUser[] $taskUsers
+ *
+ * @mixin TimestampBehavior
  */
 class Task extends \yii\db\ActiveRecord
 {
@@ -28,6 +32,12 @@ class Task extends \yii\db\ActiveRecord
      */
     public static function tableName() {
         return 'task';
+    }
+
+    public function behaviors() {
+        return [
+            TimestampBehavior::class,
+        ];
     }
 
     /**

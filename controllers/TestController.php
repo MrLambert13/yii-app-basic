@@ -17,7 +17,9 @@ class TestController extends Controller
         $user = new User();
         $user->username = 'Test name';
         $user->password_hash = 'qweqwe';
+        $user->creator_id = 1;
         $user->save();
+        $user->touch('were');
 
         _end($user);
         return $this->render('index');
