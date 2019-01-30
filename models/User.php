@@ -25,6 +25,7 @@ use yii\behaviors\TimestampBehavior;
  *
  * @mixin TimestampBehavior
  */
+//3) Имплементировать в User интерфейс IdentityInterface и реализовать необходимые методы
 class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
 {
     public $password;
@@ -42,6 +43,10 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
     }
 
     public function behaviors() {
+        /**
+         * 1) Подключить в классах User и Task поведения TimestampBehavior и BlameableBehavior - проверить как
+         * они работают при создании и изменении записей в базе
+         */
         return [
             TimestampBehavior::class,
             [
@@ -59,6 +64,9 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
      * @throws \yii\base\Exception
      */
     public function beforeSave($insert) {
+        /**
+         * 4) Реализовать там же в методе beforeSave хэширование непустого пароля в аттрибут password_hash
+         */
         if (!parent::beforeSave($insert)) {
             return false;
         }
@@ -79,6 +87,10 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
      * {@inheritdoc}
      */
     public function rules() {
+        /**
+         * 2) Создать в классе User свойство password и добавить его в одно из правил rules(),
+         * убрать password_hash из required правила.
+         */
         return [
             [['username'], 'required'],
             [['creator_id', 'updater_id', 'created_at', 'updated_at'], 'integer'],
