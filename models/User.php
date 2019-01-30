@@ -44,11 +44,11 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
     public function behaviors() {
         return [
             TimestampBehavior::class,
-            /*[
+            [
                 'class' => BlameableBehavior::class,
                 'createdByAttribute' => 'creator_id',
                 'updatedByAttribute' => 'updater_id',
-            ],*/
+            ],
         ];
     }
 
@@ -67,7 +67,6 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
             $this->auth_key = Yii::$app->security->generateRandomString();
         }
         _log($this->password);
-        _end($this->password);
         if (!empty($this->password)) {
             $this->password_hash = Yii::$app->security->generatePasswordHash($this->password);
         }
