@@ -37,6 +37,11 @@ class Task extends \yii\db\ActiveRecord
     public function behaviors() {
         return [
             TimestampBehavior::class,
+            [
+                'class' => BlameableBehavior::class,
+                'createdByAttribute' => 'creator_id',
+                'updatedByAttribute' => 'updater_id',
+            ],
         ];
     }
 

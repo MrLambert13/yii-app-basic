@@ -5,6 +5,8 @@ namespace app\controllers;
 use app\models\Task;
 use Yii;
 use app\models\User;
+use yii\behaviors\BlameableBehavior;
+use yii\behaviors\TimestampBehavior;
 use yii\data\ActiveDataProvider;
 use yii\filters\AccessControl;
 use yii\web\Controller;
@@ -36,6 +38,12 @@ class UserController extends Controller
                 'actions' => [
                     'delete' => ['POST'],
                 ],
+            ],
+            TimestampBehavior::class,
+            [
+                'class' => BlameableBehavior::class,
+                'createdByAttribute' => 'creator_id',
+                'updatedByAttribute' => 'updater_id',
             ],
         ];
     }
@@ -96,6 +104,8 @@ class UserController extends Controller
      */
     public function actionUpdate($id) {
         $model = $this->findModel($id);
+        $model->updater_id = Yii::$app->user->id;
+        $model->updated_at = time();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);

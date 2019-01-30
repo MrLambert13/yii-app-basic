@@ -76,7 +76,7 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
             $this->auth_key = Yii::$app->security->generateRandomString();
         }
 
-        if (!empty($this->password)) {
+        if (isset($this->password)) {
             $this->password_hash = Yii::$app->security->generatePasswordHash($this->password);
         }
 
