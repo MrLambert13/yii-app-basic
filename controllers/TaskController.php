@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\models\TaskUser;
 use Yii;
 use app\models\Task;
 use yii\behaviors\BlameableBehavior;
@@ -35,7 +36,18 @@ class TaskController extends Controller
      * @return mixed
      */
     public function actionMy() {
-        $query = Task::find()->byCreator(Yii::$app->user->id);
+        //id текущего пользовтеля
+        $currentUserId = Yii::$app->user->id;
+
+        //Выведет только задачи где пользователь создатель
+        //$query = Task::find()->byCreator($currentUserId);
+
+
+        //задачи где пользователь создатель, и расшаренные ему задачи
+        //не сообразить как собрать данную sql команду через activequery
+        $query = Task::findBySql('SELECT * FROM task WHERE creator_id = 1 
+          OR id IN (SELECT task_id FROM task_user WHERE user_id = 1)');
+
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
@@ -109,7 +121,7 @@ class TaskController extends Controller
     public function actionDelete($id) {
         $this->findModel($id)->delete();
 
-        return $this->redirect(['index']);
+        return $this->redirect(['my']);
     }
 
     /**
