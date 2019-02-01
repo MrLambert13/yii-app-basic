@@ -42,7 +42,6 @@ class TaskController extends Controller
         //Выведет только задачи где пользователь создатель
         //$query = Task::find()->byCreator($currentUserId);
 
-
         //задачи где пользователь создатель, и расшаренные ему задачи
         //не сообразить как собрать данную sql команду через activequery
         $query = Task::findBySql('SELECT * FROM task WHERE creator_id = 1 

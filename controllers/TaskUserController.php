@@ -75,7 +75,9 @@ class TaskUserController extends Controller
 
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            Yii::$app->session->setFlash('success', 'Task shared success');
+
+            return $this->redirect(['task/my']);
         }
 
         //TODO убрать пользователей кому уже расшарена задача
