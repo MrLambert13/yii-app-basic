@@ -15,6 +15,17 @@ class TaskQuery extends \yii\db\ActiveQuery
     }*/
 
     /**
+     * return all owner's tasks
+     *
+     * @param $id integer id owner
+     *
+     * @return \app\models\Task|array
+     */
+    public function byCreator($id) {
+        return $this->andWhere(['creator_id' => $id]);
+    }
+
+    /**
      * {@inheritdoc}
      * @return \app\models\Task[]|array
      */

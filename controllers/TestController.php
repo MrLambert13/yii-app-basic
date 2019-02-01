@@ -14,14 +14,14 @@ class TestController extends Controller
      */
     public function actionIndex() {
 
-        $user = new User();
+        /*$user = new User();
         $user->username = 'Test name';
         $user->password_hash = 'qweqwe';
         $user->creator_id = 1;
         $user->save();
         $user->touch('were');
 
-        _end($user);
+        _end($user);*/
         return $this->render('index');
     }
 

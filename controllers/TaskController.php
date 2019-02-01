@@ -4,6 +4,8 @@ namespace app\controllers;
 
 use Yii;
 use app\models\Task;
+use yii\behaviors\BlameableBehavior;
+use yii\behaviors\TimestampBehavior;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -32,12 +34,13 @@ class TaskController extends Controller
      * Lists all Task models.
      * @return mixed
      */
-    public function actionIndex() {
+    public function actionMy() {
+        $query = Task::find()->byCreator(Yii::$app->user->id);
         $dataProvider = new ActiveDataProvider([
-            'query' => Task::find(),
+            'query' => $query,
         ]);
 
-        return $this->render('index', [
+        return $this->render('my', [
             'dataProvider' => $dataProvider,
         ]);
     }
