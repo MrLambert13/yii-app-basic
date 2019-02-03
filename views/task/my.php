@@ -42,11 +42,17 @@ $this->params['breadcrumbs'][] = $this->title;
                 'class' => 'yii\grid\ActionColumn',
                 'template' => '{share} {view} {update} {delete}',
                 'buttons' => [
-                    'share' => function ($url, Task $model, $key) {
+                    'share' => function ($url, Task $model, $key) use ($creator) {
+                        // Если пользователь не создатель задачи, то он не может расшаривать её
+                        if (!in_array($model->id, $creator)) {
+                            return false;
+                        }
+
                         $icon = \yii\bootstrap\Html::icon('share');
                         return Html::a($icon, ['task-user/create', 'taskId' => $model->id]);
                     },
                 ],
+
             ],
         ],
     ]); ?>
