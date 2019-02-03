@@ -14,9 +14,6 @@ use yii\widgets\Pjax;
 /* @var $dataProvider yii\data\ActiveDataProvider */
 /* @var $creator array */
 
-
-var_dump($creator);
-var_dump($dataProvider->canGetProperty('Title'));
 $this->title = 'Tasks';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
