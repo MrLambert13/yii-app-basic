@@ -12,12 +12,15 @@ use yii\widgets\Pjax;
 
 /* @var $this yii\web\View */
 /* @var $dataProvider yii\data\ActiveDataProvider */
+/* @var $creator array */
 
+
+var_dump($creator);
+var_dump($dataProvider->canGetProperty('Title'));
 $this->title = 'Tasks';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="task-index">
-
   <h1><?= Html::encode($this->title) ?></h1>
     <?php Pjax::begin(); ?>
 
@@ -35,7 +38,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'updated_at:datetime',
 
             [
-              // Добавить в столбце действий ссылку с иконкой на /task-user/create/?taskId=ид_задачи
+                // Добавить в столбце действий ссылку с иконкой на /task-user/create/?taskId=ид_задачи
                 'class' => 'yii\grid\ActionColumn',
                 'template' => '{share} {view} {update} {delete}',
                 'buttons' => [
@@ -48,4 +51,5 @@ $this->params['breadcrumbs'][] = $this->title;
         ],
     ]); ?>
     <?php Pjax::end(); ?>
+
 </div>

@@ -46,7 +46,6 @@ class TaskController extends Controller
     //Выведет только задачи где пользователь создатель (по заданию)
     $query = Task::find()->byCreator($currentUserId);
 
-
     //задачи где пользователь создатель, и расшаренные ему задачи
     $myQuery = TaskUser::find()->select('task_id')->where(['user_id' => $currentUserId]);
     $myMainQuery = Task::find()->where(['creator_id' => $currentUserId])->orWhere(['id' => $myQuery]);
@@ -54,9 +53,11 @@ class TaskController extends Controller
     $dataProvider = new ActiveDataProvider([
       'query' => $myMainQuery,
     ]);
-
+      $creator = Task::find()->where(['creator_id' => $currentUserId])->select('id')->column();
+      _log($creator);
     return $this->render('my', [
       'dataProvider' => $dataProvider,
+        'creator' => $creator,
     ]);
   }
 
