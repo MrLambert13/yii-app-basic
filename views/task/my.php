@@ -58,7 +58,6 @@ $this->params['breadcrumbs'][] = $this->title;
                         return in_array($model->id, $creator);
                     },
                 ],
-
             ],
         ],
     ]); ?>
