@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use app\models\Task;
 use app\models\User;
+use Throwable;
 use Yii;
 use app\models\TaskUser;
 use yii\data\ActiveDataProvider;
@@ -130,6 +131,8 @@ class TaskUserController extends Controller
      *
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
+     * @throws Throwable
+     * @throws \yii\db\StaleObjectException
      */
     public function actionDelete($id) {
         $this->findModel($id)->delete();
