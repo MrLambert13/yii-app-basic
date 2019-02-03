@@ -5,8 +5,6 @@ namespace app\controllers;
 use app\models\TaskUser;
 use Yii;
 use app\models\Task;
-use yii\behaviors\BlameableBehavior;
-use yii\behaviors\TimestampBehavior;
 use yii\data\ActiveDataProvider;
 use yii\filters\AccessControl;
 use yii\web\Controller;
@@ -37,12 +35,6 @@ class TaskController extends Controller
                         'roles' => ['@'],
                     ],
                 ],
-            ],
-            TimestampBehavior::class,
-            [
-                'class' => BlameableBehavior::class,
-                'createdByAttribute' => 'creator_id',
-                'updatedByAttribute' => 'updater_id',
             ],
         ];
     }

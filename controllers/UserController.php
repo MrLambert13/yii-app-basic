@@ -5,12 +5,9 @@ namespace app\controllers;
 use app\models\Task;
 use Yii;
 use app\models\User;
-use yii\behaviors\BlameableBehavior;
-use yii\behaviors\TimestampBehavior;
 use yii\data\ActiveDataProvider;
 use yii\filters\AccessControl;
 use yii\web\Controller;
-use yii\web\ForbiddenHttpException;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
@@ -38,12 +35,6 @@ class UserController extends Controller
                 'actions' => [
                     'delete' => ['POST'],
                 ],
-            ],
-            TimestampBehavior::class,
-            [
-                'class' => BlameableBehavior::class,
-                'createdByAttribute' => 'creator_id',
-                'updatedByAttribute' => 'updater_id',
             ],
         ];
     }
@@ -124,6 +115,8 @@ class UserController extends Controller
      *
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
+     * @throws \Throwable
+     * @throws \yii\db\StaleObjectException
      */
     public function actionDelete($id) {
         $this->findModel($id)->delete();
@@ -138,7 +131,7 @@ class UserController extends Controller
      *  б) Создать три связаные (с записью в user) запиcи в task, используя метод link().
      *  в) Прочитать из базы все записи из User применив жадную подгрузку связанных данных из Task, с запросами без JOIN.
      *  г) Прочитать из базы все записи из User применив жадную подгрузку связанных данных из Task, с запросом содержащим JOIN.
-     * @throws NotFoundHttpException if the model cannot be found
+     * @return string
      */
     public function actionTest() {
         //Создать запись в таблице user.
