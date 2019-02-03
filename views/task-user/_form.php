@@ -7,6 +7,8 @@ use yii\widgets\ActiveForm;
 /* @var $model app\models\TaskUser */
 /* @var $form yii\widgets\ActiveForm */
 /* @var $users array */
+
+//Изменяем вьюху _form - удалив поле task_id и заменив user_id выпадающим списком с переданным из контроллера массивом пользователей.
 ?>
 
 <div class="task-user-form">

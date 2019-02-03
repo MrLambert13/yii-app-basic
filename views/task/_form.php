@@ -6,6 +6,8 @@ use yii\widgets\ActiveForm;
 /* @var $this yii\web\View */
 /* @var $model app\models\Task */
 /* @var $form yii\widgets\ActiveForm */
+
+//В форме вьюхи task/ _form.php удалить все поля кроме title и description.
 ?>
 
 <div class="task-form">

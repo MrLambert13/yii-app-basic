@@ -35,17 +35,13 @@ AppAsset::register($this);
             'class' => 'navbar-inverse navbar-fixed-top',
         ],
     ]);
+    //В меню сайта убираем ссылки about-contact и делаем две ссылки на создание задачи и списка своих задач.
     echo Nav::widget([
         'options' => ['class' => 'navbar-nav navbar-right'],
         'items' => [
             ['label' => 'Home', 'url' => ['/site/index']],
-            ['label' => 'About', 'url' => ['/site/about']],
-            ['label' => 'Contact', 'url' => ['/site/contact']],
-            ['label' => 'Test', 'url' => ['/test/index']],
-            ['label' => 'User', 'url' => ['/user']],
             ['label' => 'Task', 'url' => ['/task/my']],
-            ['label' => 'TaskUser', 'url' => ['/task-user']],
-            ['label' => 'Gii', 'url' => ['/gii']],
+          ['label' => 'New task', 'url' => ['/task/create']],
             Yii::$app->user->isGuest ? (
                 ['label' => 'Login', 'url' => ['/site/login']]
             ) : (

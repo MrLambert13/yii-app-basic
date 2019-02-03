@@ -1,4 +1,9 @@
 <?php
+/**
+ * Создать вьюху my скопировав или изменив вьюху index - в таблице д.б. только столбцы title, description,
+ * created_at,updated_at,действия. Убедиться, что теперь в списке задач выводятся только созданные текущим
+ * пользователем.
+ */
 
 use app\models\Task;
 use yii\helpers\Html;
@@ -30,6 +35,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'updated_at:datetime',
 
             [
+              // Добавить в столбце действий ссылку с иконкой на /task-user/create/?taskId=ид_задачи
                 'class' => 'yii\grid\ActionColumn',
                 'template' => '{share} {view} {update} {delete}',
                 'buttons' => [
