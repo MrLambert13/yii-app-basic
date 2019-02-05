@@ -25,26 +25,13 @@ $this->params['breadcrumbs'][] = $this->title;
   </p>
 
     <?= GridView::widget([
+        //Во вьюхе accessed выводим название, текст, имя автора и время создания.
         'dataProvider' => $dataProvider,
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
             'title',
             'description:ntext',
+            'creator.username',
             'created_at:datetime',
-            'updated_at:datetime',
-
-            [
-                // Добавить в столбце действий ссылку с иконкой на /task-user/create/?taskId=ид_задачи
-                'class' => 'yii\grid\ActionColumn',
-                'template' => '{share} {view} {update} {delete}',
-                'buttons' => [
-                    'share' => function ($url, Task $model, $key) {
-                        $icon = \yii\bootstrap\Html::icon('share');
-                        return Html::a($icon, ['task-user/create', 'taskId' => $model->id]);
-                    },
-
-                ]
-            ],
         ],
     ]); ?>
     <?php Pjax::end(); ?>

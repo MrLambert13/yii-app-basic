@@ -4,18 +4,20 @@ namespace app\models;
 
 /**
  * This is the model class for table "task_user".
- *
- * @property int  $id
- * @property int  $task_id
- * @property int  $user_id
- *
- * @property Task $task
- * @property User $user
+ * @property int        $id
+ * @property int        $task_id
+ * @property int        $user_id
+ * @property Task       $task
+ * @property User       $user
+ * @property TaskUser[] $taskUsers
+ * @property User[]     $sharedUsers
  */
 class TaskUser extends \yii\db\ActiveRecord
 {
     const RELATION_TASK = 'task';
     const RELATION_USER = 'user';
+    const RELATION_TASK_USERS = 'taskUsers';
+    const RELATION_SHARED_USERS = 'sharedUsers';
 
     /**
      * {@inheritdoc}
@@ -53,6 +55,14 @@ class TaskUser extends \yii\db\ActiveRecord
      */
     public function getTask() {
         return $this->hasOne(Task::className(), ['id' => 'task_id']);
+    }
+
+    /**
+     * Возвращает информацию о задаче
+     * @return \yii\db\ActiveQuery
+     */
+    public function getTaskUsers() {
+        return $this->hasMany(TaskUser::className(), ['task_id' => 'id']);
     }
 
     /**

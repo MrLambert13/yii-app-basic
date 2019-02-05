@@ -27,23 +27,37 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
+            //Во вьюхе shared выводим название и текст задач, кнопку удаления доступа для всех юзеров, работающую с подверждением и отправкой по POST
             'title',
             'description:ntext',
-            'created_at:datetime',
-            'updated_at:datetime',
+            [
+                'label' => 'users',
+                'content' => function (Task $model) {
+                    $users = $model->getSharedUsers()->select('username')->column();
+                    return join(', ', $users);
+                }
+            ],
 
             [
                 // Добавить в столбце действий ссылку с иконкой на /task-user/create/?taskId=ид_задачи
                 'class' => 'yii\grid\ActionColumn',
-                'template' => '{share} {view} {update} {delete}',
+                'template' => '{deleteAll} {view} {update} {delete}',
                 'buttons' => [
-                    'share' => function ($url, Task $model, $key) {
-                        $icon = \yii\bootstrap\Html::icon('share');
-                        return Html::a($icon, ['task-user/create', 'taskId' => $model->id]);
+                    'deleteAll' => function ($url, Task $model, $key) {
+                        $icon = \yii\bootstrap\Html::icon('remove');
+                        return Html::a($icon, [
+                            'task-user/delete-all',
+                            'taskId' => $model->id,],
+                            [
+                                'data' => [
+                                    'confirm' => 'Вы действительно хотите убрать доступ к задаче?',
+                                    'method' => 'post',
+                                ],
+                            ]
+                        );
                     },
 
-                ]
+                ],
             ],
         ],
     ]); ?>

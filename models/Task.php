@@ -100,6 +100,15 @@ class Task extends \yii\db\ActiveRecord
     }
 
     /**
+     * Возвращает id пользователей имеющих доступ к задаче
+     * @return \yii\db\ActiveQuery
+     */
+    public function getSharedUsers() {
+        return $this->hasMany(User::className(), ['id' => 'user_id'])
+            ->via(self::RELATION_TASK_USERS);
+    }
+
+    /**
      * {@inheritdoc}
      * @return \app\models\query\TaskQuery the active query used by this AR class.
      */

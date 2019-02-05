@@ -48,26 +48,65 @@ class TaskController extends Controller
          * б) В TaskController cделать экшен my, при создании датапровайдера добавив к $query созданный в пункте "а"
          * метод byCreator($userId) и подставив вместо $userId Id текущего юзера.
          */
-        //id текущего пользовтеля
         $currentUserId = Yii::$app->user->id;
 
-        //Выведет только задачи где пользователь создатель (по заданию)
         $query = Task::find()->byCreator($currentUserId);
 
-        //задачи где пользователь создатель, и расшаренные ему задачи
-        $myQuery = TaskUser::find()->select('task_id')->where(['user_id' => $currentUserId]);
-        $myMainQuery = Task::find()->where(['creator_id' => $currentUserId])->orWhere(['id' => $myQuery]);
-
         $dataProvider = new ActiveDataProvider([
-            'query' => $myMainQuery,
+            'query' => $query,
         ]);
-
-        //номера задач где пользователь является создателем
-        $creator = Task::find()->where(['creator_id' => $currentUserId])->select('id')->column();
 
         return $this->render('my', [
             'dataProvider' => $dataProvider,
-            'creator' => $creator,
+        ]);
+    }
+
+    /**
+     * Lists all Shared Task models.
+     * @return mixed
+     */
+    public function actionShared() {
+        /**
+         * а) Создаем экшен shared - список расшаренных задач, экшен отличается от my тем, что к query
+         * создаваемому для датапровайдера присоединен с помощью inner join релейшен taskUsers.
+         */
+        $currentUserId = Yii::$app->user->id;
+
+        $query = Task::find()
+            ->byCreator($currentUserId)
+            ->innerJoinWith(TaskUser::RELATION_TASK_USERS);
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+        ]);
+
+
+        return $this->render('shared', [
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+
+    /**
+     * Lists all Accessed Task models.
+     * @return mixed
+     */
+    public function actionAccessed() {
+        /**
+         * Создаем экшен accessed - список доступных чужих задач.
+         */
+        $currentUserId = Yii::$app->user->id;
+
+        $query = Task::find()
+            ->innerJoinWith(Task::RELATION_TASK_USERS)
+            ->where(['user_id' => $currentUserId]);
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+        ]);
+
+
+        return $this->render('accessed', [
+            'dataProvider' => $dataProvider,
         ]);
     }
 
@@ -81,24 +120,24 @@ class TaskController extends Controller
      */
     public function actionView($id) {
         $currentUserId = Yii::$app->user->id;
-        $creator = Task::find()->where(['creator_id' => $currentUserId])->select('id')->column();
 
         return $this->render('view', [
             'model' => $this->findModel($id),
-            'creator' => $creator,
         ]);
     }
 
     /**
      * Creates a new Task model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
+     * If creation is successful, the browser will be redirected to the 'my' page.
      * @return mixed
      */
     public function actionCreate() {
         $model = new Task();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            Yii::$app->session->setFlash('success', 'Задача успешно создана и сохранена');
+
+            return $this->redirect(['task/my']);
         }
 
         return $this->render('create', [
@@ -108,7 +147,7 @@ class TaskController extends Controller
 
     /**
      * Updates an existing Task model.
-     * If update is successful, the browser will be redirected to the 'view' page.
+     * If update is successful, the browser will be redirected to the 'my' page.
      *
      * @param integer $id
      *
@@ -116,14 +155,18 @@ class TaskController extends Controller
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionUpdate($id) {
-        $model = $this->findModel($id);
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        $task = $this->findModel($id);
+        if (!$task || $task->creator_id != Yii::$app->user->id) {
+            throw new ForbiddenHttpException();
+        }
+        if ($task->load(Yii::$app->request->post()) && $task->save()) {
+            //в) Добавляем флэш-сообщения после изменения
+            Yii::$app->session->setFlash('success', 'Задача "' . $task->title . '" была обновлена.');
+            return $this->redirect(['task/my']);
         }
 
         return $this->render('update', [
-            'model' => $model,
+            'model' => $task,
         ]);
     }
 
@@ -139,9 +182,12 @@ class TaskController extends Controller
      * @throws \yii\db\StaleObjectException
      */
     public function actionDelete($id) {
-        $this->findModel($id)->delete();
+        $model = $this->findModel($id);
+        $model->delete();
+        //в) Добавляем флэш-сообщения после удаления
+        Yii::$app->session->setFlash('warning', 'Задача "' . $model->title . '" была удалена.');
 
-        return $this->redirect(['my']);
+        return $this->redirect(['task/my']);
     }
 
     /**

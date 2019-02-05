@@ -103,6 +103,26 @@ class TaskUserController extends Controller
     }
 
     /**
+     * Unshared task for all users.
+     * @var $taskId integer
+     * @return mixed
+     * @throws ForbiddenHttpException
+     */
+    public function actionDeleteAll($taskId) {
+        //Сделать проверку прав доступа.
+        $task = Task::findOne($taskId);
+        if (!$task || $task->creator_id != Yii::$app->user->id) {
+            throw new ForbiddenHttpException();
+        }
+
+        $task->unlinkAll(Task::RELATION_TASK_USERS, true);
+
+        Yii::$app->session->setFlash('success', 'Успешно удалили доступ к задаче');
+
+        return $this->redirect(['task/shared']);
+    }
+
+    /**
      * Updates an existing TaskUser model.
      * If update is successful, the browser will be redirected to the 'view' page.
      *
