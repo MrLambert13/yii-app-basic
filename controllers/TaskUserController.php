@@ -7,7 +7,6 @@ use app\models\User;
 use Throwable;
 use Yii;
 use app\models\TaskUser;
-use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\ForbiddenHttpException;
 use yii\web\NotFoundHttpException;

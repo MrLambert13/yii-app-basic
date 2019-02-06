@@ -1,6 +1,5 @@
 <?php
 
-use app\models\Task;
 use app\models\TaskUser;
 use app\models\User;
 use yii\grid\GridView;
@@ -60,7 +59,6 @@ $this->params['breadcrumbs'][] = $this->title;
                     'delete' => function ($url, User $user, $key) use ($model) {
                         $icon = \yii\bootstrap\Html::icon('remove');
                         $taskUserId = TaskUser::find()->where(['user_id' => $user->id])->andWhere(['task_id' => $model->id])->column();
-
                         return Html::a($icon, [
                             'task-user/delete',
                             'id' => $taskUserId[0],],

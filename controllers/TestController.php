@@ -3,7 +3,6 @@
 namespace app\controllers;
 
 use app\models\Task;
-use app\models\User;
 use Yii;
 use yii\web\Controller;
 use yii\web\ForbiddenHttpException;

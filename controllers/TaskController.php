@@ -3,7 +3,6 @@
 namespace app\controllers;
 
 use app\models\TaskUser;
-use app\models\User;
 use Yii;
 use app\models\Task;
 use yii\data\ActiveDataProvider;
@@ -129,7 +128,6 @@ class TaskController extends Controller
         }
 
         $users = $task->getSharedUsers();
-
         $dataProvider = new ActiveDataProvider([
             'query' => $users,
         ]);
