@@ -4,25 +4,20 @@ namespace app\models\query;
 
 /**
  * This is the ActiveQuery class for [[\app\models\Task]].
- *
  * @see \app\models\Task
  */
 class TaskQuery extends \yii\db\ActiveQuery
 {
-    /*public function active()
-    {
-        return $this->andWhere('[[status]]=1');
-    }*/
-
     /**
-     * а) В TaskQuery сделать метод byCreator($userId), который должен добавлять условие по id создателя (creator_id = $userId)
+     * а) В TaskQuery сделать метод byCreator($userId), который должен добавлять условие по id создателя (creator_id =
+     * $userId)
      *
      * @param $userId integer
      *
      * @return mixed
      */
-  public function byCreator($userId) {
-    return $this->andWhere(['creator_id' => $userId]);
+    public function byCreator($userId) {
+        return $this->andWhere(['creator_id' => $userId]);
     }
 
     /**

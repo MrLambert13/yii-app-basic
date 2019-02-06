@@ -59,10 +59,11 @@ $this->params['breadcrumbs'][] = $this->title;
                 'buttons' => [
                     'delete' => function ($url, User $user, $key) use ($model) {
                         $icon = \yii\bootstrap\Html::icon('remove');
-                        $taskUserId = TaskUser::find()->where(['user_id' => $user->id])->andWhere(['task_id' => $model->id]);
+                        $taskUserId = TaskUser::find()->where(['user_id' => $user->id])->andWhere(['task_id' => $model->id])->column();
+                        var_dump($taskUserId[0]);
                         return Html::a($icon, [
                             'task-user/delete',
-                            'id' => $taskUserId,],
+                            'id' => $taskUserId[0],],
                             [
                                 'data' => [
                                     'confirm' => 'Вы действительно хотите убрать доступ к задаче пользователю ' . $user->username . ' ?',

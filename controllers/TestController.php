@@ -2,27 +2,27 @@
 
 namespace app\controllers;
 
+use app\models\Task;
 use app\models\User;
+use Yii;
 use yii\web\Controller;
+use yii\web\ForbiddenHttpException;
 
 class TestController extends Controller
 {
     /**
      * Displays test page.
-     *
      * @return string
+     * @throws ForbiddenHttpException
      */
     public function actionIndex() {
+        $id = 1;
+        $task = Task::findOne($id);
+        $currentUserId = Yii::$app->user->id;
 
-        /*$user = new User();
-        $user->username = 'Test name';
-        $user->password_hash = 'qweqwe';
-        $user->creator_id = 1;
-        $user->save();
-        $user->touch('were');
+        $users = $task->getTaskUsers();
 
-        _end($user);*/
-        return $this->render('index');
+        _end($users);
     }
 
 
