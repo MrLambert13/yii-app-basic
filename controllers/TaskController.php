@@ -3,11 +3,13 @@
 namespace app\controllers;
 
 use app\models\TaskUser;
+use app\models\User;
 use Yii;
 use app\models\Task;
 use yii\data\ActiveDataProvider;
 use yii\filters\AccessControl;
 use yii\web\Controller;
+use yii\web\ForbiddenHttpException;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
@@ -117,12 +119,26 @@ class TaskController extends Controller
      *
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
+     * @throws ForbiddenHttpException
      */
     public function actionView($id) {
+        $task = $this::findModel($id);
         $currentUserId = Yii::$app->user->id;
+        if (!$task || $task->creator_id != $currentUserId) {
+            throw new ForbiddenHttpException();
+        }
+
+        $users = Task::find()
+            ->byCreator($currentUserId)
+            ->innerJoinWith(TaskUser::RELATION_TASK_USERS);
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $users,
+        ]);
 
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'model' => $task,
+            'dataProvider' => $dataProvider,
         ]);
     }
 
@@ -135,8 +151,9 @@ class TaskController extends Controller
         $model = new Task();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            //Добавляем флэш-сообщения после создания
             Yii::$app->session->setFlash('success', 'Задача успешно создана и сохранена');
-
+            //Меняем редиректы после создания, изменения и удаления на my.
             return $this->redirect(['task/my']);
         }
 
@@ -153,26 +170,29 @@ class TaskController extends Controller
      *
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
+     * @throws ForbiddenHttpException
      */
     public function actionUpdate($id) {
-        $task = $this->findModel($id);
-        if (!$task || $task->creator_id != Yii::$app->user->id) {
+        $model = $this->findModel($id);
+        // Добавляем при изменения и удалении проверку что текущий пользователь создатель задачи, если нет - выбрасываем исключение.
+        if (!$model || $model->creator_id != Yii::$app->user->id) {
             throw new ForbiddenHttpException();
         }
-        if ($task->load(Yii::$app->request->post()) && $task->save()) {
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
             //в) Добавляем флэш-сообщения после изменения
-            Yii::$app->session->setFlash('success', 'Задача "' . $task->title . '" была обновлена.');
+            Yii::$app->session->setFlash('success', 'Задача "' . $model->title . '" была обновлена.');
+            //Меняем редиректы после создания, изменения и удаления на my.
             return $this->redirect(['task/my']);
         }
 
         return $this->render('update', [
-            'model' => $task,
+            'model' => $model,
         ]);
     }
 
     /**
      * Deletes an existing Task model.
-     * If deletion is successful, the browser will be redirected to the 'index' page.
+     * If deletion is successful, the browser will be redirected to the 'my' page.
      *
      * @param integer $id
      *
@@ -183,10 +203,14 @@ class TaskController extends Controller
      */
     public function actionDelete($id) {
         $model = $this->findModel($id);
+        // Добавляем при изменения и удалении проверку что текущий пользователь создатель задачи, если нет - выбрасываем исключение.
+        if (!$model || $model->creator_id != Yii::$app->user->id) {
+            throw new ForbiddenHttpException();
+        }
         $model->delete();
         //в) Добавляем флэш-сообщения после удаления
         Yii::$app->session->setFlash('warning', 'Задача "' . $model->title . '" была удалена.');
-
+        //Меняем редиректы после создания, изменения и удаления на my.
         return $this->redirect(['task/my']);
     }
 

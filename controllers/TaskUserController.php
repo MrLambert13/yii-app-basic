@@ -27,37 +27,11 @@ class TaskUserController extends Controller
                 'class' => VerbFilter::className(),
                 'actions' => [
                     'delete' => ['POST'],
+                    'delete-all' => ['POST'],
+
                 ],
             ],
         ];
-    }
-
-    /**
-     * Lists all TaskUser models.
-     * @return mixed
-     */
-    public function actionIndex() {
-        $dataProvider = new ActiveDataProvider([
-            'query' => TaskUser::find(),
-        ]);
-
-        return $this->render('index', [
-            'dataProvider' => $dataProvider,
-        ]);
-    }
-
-    /**
-     * Displays a single TaskUser model.
-     *
-     * @param integer $id
-     *
-     * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    public function actionView($id) {
-        return $this->render('view', [
-            'model' => $this->findModel($id),
-        ]);
     }
 
     /**
@@ -77,13 +51,11 @@ class TaskUserController extends Controller
         $model = new TaskUser();
         $model->task_id = $taskId;
 
-        // В экшене create присваем атрибуту task_id модели значение taskId из урла и создаем список пользователей,
-        // кроме текущего, для выпадающего списка. Добавить флэш сообщение и поменять редирект после создания
-        // на созданный список своих задач..
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            Yii::$app->session->setFlash('success', 'Task shared success');
-
-            return $this->redirect(['task/my']);
+            //Добавляем флэш-сообщения после создания и удаления доступа.
+            Yii::$app->session->setFlash('success', 'Доступ к задаче добавлен');
+            //Меняем редиректы после создания и удаления на /task/shared.
+            return $this->redirect(['task/shared']);
         }
 
         //Запрос пользователей кто не является создателем задачи, и не расшаренным.
@@ -117,30 +89,9 @@ class TaskUserController extends Controller
 
         $task->unlinkAll(Task::RELATION_TASK_USERS, true);
 
-        Yii::$app->session->setFlash('success', 'Успешно удалили доступ к задаче');
+        Yii::$app->session->setFlash('warning', 'Успешно удалили доступ к задаче');
 
         return $this->redirect(['task/shared']);
-    }
-
-    /**
-     * Updates an existing TaskUser model.
-     * If update is successful, the browser will be redirected to the 'view' page.
-     *
-     * @param integer $id
-     *
-     * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    public function actionUpdate($id) {
-        $model = $this->findModel($id);
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        }
-
-        return $this->render('update', [
-            'model' => $model,
-        ]);
     }
 
     /**
@@ -157,7 +108,9 @@ class TaskUserController extends Controller
     public function actionDelete($id) {
         $this->findModel($id)->delete();
 
-        return $this->redirect(['index']);
+        Yii::$app->session->setFlash('warning', 'Успешно удалили доступ к задаче');
+
+        return $this->redirect(['task/shared']);
     }
 
     /**

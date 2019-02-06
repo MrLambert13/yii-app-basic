@@ -1,10 +1,14 @@
 <?php
 
+use app\models\Task;
+use yii\grid\GridView;
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Task */
+/* @var $dataProvider yii\data\ActiveDataProvider */
+
 
 $this->title = $model->title;
 $this->params['breadcrumbs'][] = ['label' => 'Tasks', 'url' => ['my']];
@@ -39,6 +43,20 @@ $this->params['breadcrumbs'][] = $this->title;
             'updater_id',
             'created_at:datetime',
             'updated_at:datetime',
+        ],
+    ]) ?>
+
+    <?= GridView::widget([
+        'dataProvider' => $dataProvider,
+        'columns' => [
+            'username',
+            /*[
+                'label' => 'users',
+                'content' => function (Task $model) {
+                    $users = $model->getSharedUsers()->select('id, username');
+                    return $users;
+                }
+            ],*/
         ],
     ]) ?>
 
