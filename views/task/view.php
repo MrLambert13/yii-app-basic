@@ -1,6 +1,8 @@
 <?php
 
 use app\models\Task;
+use app\models\TaskUser;
+use app\models\User;
 use yii\grid\GridView;
 use yii\helpers\Html;
 use yii\widgets\DetailView;
@@ -50,13 +52,28 @@ $this->params['breadcrumbs'][] = $this->title;
         'dataProvider' => $dataProvider,
         'columns' => [
             'username',
-            /*[
-                'label' => 'users',
-                'content' => function (Task $model) {
-                    $users = $model->getSharedUsers()->select('id, username');
-                    return $users;
-                }
-            ],*/
+            [
+                // Добавить в столбце действий ссылку с иконкой на /task-user/create/?taskId=ид_задачи
+                'class' => 'yii\grid\ActionColumn',
+                'template' => '{delete}',
+                'buttons' => [
+                    'delete' => function ($url, User $user, $key) use ($model) {
+                        $icon = \yii\bootstrap\Html::icon('remove');
+                        $taskUserId = TaskUser::find()->where(['user_id' => $user->id])->andWhere(['task_id' => $model->id])->select('id')->column();
+                        return Html::a($icon, [
+                            'task-user/delete',
+                            'id' => $taskUserId,],
+                            [
+                                'data' => [
+                                    'confirm' => 'Вы действительно хотите убрать доступ к задаче пользователю ' . $user->username . ' ?',
+                                    'method' => 'post',
+                                ],
+                            ]
+                        );
+                    },
+
+                ],
+            ],
         ],
     ]) ?>
 

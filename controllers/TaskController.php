@@ -128,9 +128,7 @@ class TaskController extends Controller
             throw new ForbiddenHttpException();
         }
 
-        $users = Task::find()
-            ->byCreator($currentUserId)
-            ->innerJoinWith(TaskUser::RELATION_TASK_USERS);
+        $users = $task->getSharedUsers();
 
         $dataProvider = new ActiveDataProvider([
             'query' => $users,
