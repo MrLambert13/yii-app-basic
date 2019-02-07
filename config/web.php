@@ -56,9 +56,12 @@ $config = [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
-                '<controller:(user|task)>s' => '<controller>/index',
                 '<controller:[\w-]+>/<id:\d+>' => '<controller>/view',
-                '<controller:[\w-]+>/(update)/<id:\d+>' => '<controller>/update/view',
+                '<controller:[\w-]+>/update/<id:\d+>' => '<controller>/update',
+                '<controller:[\w-]+>/delete/<id:\d+>' => '<controller>/delete',
+                '<controller:[\w-]+>/create/<taskId:\d+>' => '<controller>/create',
+                '<controller:[\w-]+>/delete-all/<taskId:\d+>' => '<controller>/delete-all',
+
             ],
         ],
         'test' => [
